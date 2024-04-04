@@ -37,7 +37,9 @@ public class RoomController {
     @GetMapping("/{id}")
     public ResponseEntity<RoomDto> getRoomById(@PathVariable Long id) {
         RoomDto room = roomService.getRoomById(id);
-        return new ResponseEntity<>(room, HttpStatus.OK);
+        if(room != null)
+            return new ResponseEntity<>(room, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     
     @PostMapping

@@ -14,7 +14,7 @@ public class RoomDto {
     private Long id;
     private String roomNumber;
     private Long roomTypeId;   
-    
+    private Boolean isAvailable;
 
     // Override toString() method for better logging and debugging
     @Override
@@ -23,6 +23,7 @@ public class RoomDto {
                 "id=" + id +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", roomTypeId=" + roomTypeId +
+                ", isAvailable=" + isAvailable +
                 '}';
     }   
 }

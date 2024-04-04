@@ -18,12 +18,13 @@ CREATE TABLE room (
     id BIGSERIAL PRIMARY KEY,
     room_number VARCHAR(255) NOT NULL,
     room_type_id BIGINT,
+    is_available BOOLEAN,
     FOREIGN KEY (room_type_id) REFERENCES room_type(id)
 );
 
-CREATE TABLE room_inventory (
-    id BIGSERIAL PRIMARY KEY,
-    room_id BIGINT,
-    availability_status BOOLEAN NOT NULL,
-    FOREIGN KEY (room_id) REFERENCES room(id)
-);
+-- CREATE TABLE room_inventory (
+--     id BIGSERIAL PRIMARY KEY,
+--     room_id BIGINT,
+--     availability_status BOOLEAN NOT NULL,
+--     FOREIGN KEY (room_id) REFERENCES room(id)
+-- );

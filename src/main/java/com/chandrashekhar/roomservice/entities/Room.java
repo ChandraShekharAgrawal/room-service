@@ -20,4 +20,6 @@ public class Room {
 
     @ManyToOne
     private RoomType roomType;
+
+    private Boolean isAvailable;
 }

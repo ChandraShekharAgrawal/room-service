@@ -13,27 +13,35 @@ import com.chandrashekhar.roomservice.repositories.RoomRepository;
 import com.chandrashekhar.roomservice.repositories.RoomTypeRepository;
 
 import jakarta.transaction.Transactional;
-import lombok.NoArgsConstructor;
+// import lombok.AllArgsConstructor;
+// import lombok.NoArgsConstructor;
 
 @Service
-@NoArgsConstructor
+// @NoArgsConstructor
+// @AllArgsConstructor
 public class RoomService {
 
     private RoomRepository roomRepository;
     private RoomMapper roomMapper;
     private RoomTypeRepository roomTypeRepository;
 
-    public RoomService(RoomRepository roomRepository){
-        this.roomRepository = roomRepository;
-    }
-
-    public RoomService(RoomMapper roomMapper){
+    public RoomService(RoomRepository roomRepository, RoomMapper roomMapper, RoomTypeRepository roomTypeRepository){
         this.roomMapper = roomMapper;
-    }
-
-    public RoomService(RoomTypeRepository roomTypeRepository){
+        this.roomRepository = roomRepository;
         this.roomTypeRepository = roomTypeRepository;
     }
+
+    // public RoomService(RoomRepository roomRepository){
+    //     this.roomRepository = roomRepository;
+    // }
+
+    // public RoomService(RoomMapper roomMapper){
+    //     this.roomMapper = roomMapper;
+    // }
+
+    // public RoomService(RoomTypeRepository roomTypeRepository){
+    //     this.roomTypeRepository = roomTypeRepository;
+    // }
 
     public List<RoomDto> getAllRooms(){
         List<Room> rooms = roomRepository.findAll();

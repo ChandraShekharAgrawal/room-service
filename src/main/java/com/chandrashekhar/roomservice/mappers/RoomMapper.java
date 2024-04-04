@@ -11,7 +11,12 @@ import com.chandrashekhar.roomservice.entities.RoomDto;
 import com.chandrashekhar.roomservice.entities.RoomType;
 import com.chandrashekhar.roomservice.repositories.RoomTypeRepository;
 
+// import lombok.AllArgsConstructor;
+// import lombok.NoArgsConstructor;
+
 @Component
+// @NoArgsConstructor
+// @AllArgsConstructor
 public class RoomMapper {
 
     private RoomTypeRepository roomTypeRepository;
@@ -25,6 +30,7 @@ public class RoomMapper {
         dto.setId(room.getId());
         dto.setRoomNumber(room.getRoomNumber());
         dto.setRoomTypeId(room.getRoomType().getId());
+        dto.setIsAvailable(room.getIsAvailable());
         return dto;
     }
 
@@ -36,6 +42,7 @@ public class RoomMapper {
         if(roomType.isPresent()){
             room.setRoomType(roomType.get());
         }
+        room.setIsAvailable(true);
         return room;
     }
 

@@ -43,8 +43,21 @@ public class RoomService {
     //     this.roomTypeRepository = roomTypeRepository;
     // }
 
-    public List<RoomDto> getAllRooms(){
-        List<Room> rooms = roomRepository.findAll();
+    public List<RoomDto> getAllRooms(String roomType, Boolean available){
+
+        List<Room> rooms;
+        if(roomType == null && available == null){
+            rooms = roomRepository.findAll();
+        }
+        else if(roomType == null && available != null){
+            rooms = roomRepository.findByIsAvailable(available);
+        }
+        else if(roomType != null && available == null){
+            rooms = roomRepository.findByRoomType_Name(roomType);
+        }
+        else{
+            rooms = roomRepository.findByRoomType_NameAndIsAvailable(roomType, available);
+        }
         return roomMapper.convertToDtoList(rooms);
     }
 

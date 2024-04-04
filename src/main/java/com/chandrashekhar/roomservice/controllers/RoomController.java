@@ -1,6 +1,7 @@
 package com.chandrashekhar.roomservice.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chandrashekhar.roomservice.entities.RoomDto;
@@ -29,8 +30,8 @@ public class RoomController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<RoomDto>> getAllRooms() {
-        List<RoomDto> rooms = roomService.getAllRooms();
+    public ResponseEntity<List<RoomDto>> getAllRooms( @RequestParam(required = false) String roomType, @RequestParam(required = false) Boolean available) {
+        List<RoomDto> rooms = roomService.getAllRooms(roomType, available);
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 

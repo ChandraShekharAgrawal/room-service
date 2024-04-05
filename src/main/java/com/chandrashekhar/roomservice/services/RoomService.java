@@ -66,7 +66,7 @@ public class RoomService {
         if(roomOptional.isPresent()){
             return roomMapper.convertToDto(roomOptional.get());
         }
-        return null;
+        throw new IllegalArgumentException("Room not found with id: " + id);
     }
 
     @Transactional
@@ -77,25 +77,44 @@ public class RoomService {
     }
 
     @Transactional
-    public RoomDto updateRoom(Long id, RoomDto roomDto) {
+    public RoomDto updateRoom(Boolean checkin, Long id, RoomDto roomDto) {
+        
         Optional<Room> existingRoomOptional = roomRepository.findById(id);
-        Room existingRoom = null;
+
         if(existingRoomOptional.isPresent()){
-            existingRoom = existingRoomOptional.get();
+            Room existingRoom = existingRoomOptional.get();
+
+            if (checkin != null) {
+                if (checkin) {
+                    if (existingRoom.getIsAvailable()) {
+                        // Room is available, perform check-in
+                        existingRoom.setIsAvailable(false);
+                    }
+                    else {
+                        // Room is already occupied, throw an exception
+                        throw new IllegalStateException("Room is already occupied");
+                    }
+                }
+                else {
+                    // Perform check-out
+                    existingRoom.setIsAvailable(true);
+                }
+            }
+            else {
+                // Update room details if not performing check-in or check-out
+                existingRoom.setRoomNumber(roomDto.getRoomNumber());
+                Optional<RoomType> roomTypeOptionalToUpdate = roomTypeRepository.findById(roomDto.getRoomTypeId());
+                RoomType roomTypeToUpdate = roomTypeOptionalToUpdate.orElse(null);
+                existingRoom.setRoomType(roomTypeToUpdate);
+            }
+
+            Room updatedRoom = roomRepository.save(existingRoom);
+            return roomMapper.convertToDto(updatedRoom);
         }
-
-        existingRoom.setRoomNumber(roomDto.getRoomNumber());
-
-        Optional<RoomType> roomTypeOptionalToUpdate = roomTypeRepository.findById(roomDto.getRoomTypeId());
-        RoomType roomTypeToUpdate = null;
-        if(roomTypeOptionalToUpdate.isPresent()){
-            roomTypeToUpdate = roomTypeOptionalToUpdate.get();
+        else {
+            // Handle case when room with given id is not found by throwing an exception
+            throw new IllegalArgumentException("Room not found with id: " + id);
         }
-        existingRoom.setRoomType(roomTypeToUpdate);
-
-        Room updatedRoom = roomRepository.save(existingRoom);
-
-        return roomMapper.convertToDto(updatedRoom);
     }
 
     @Transactional
